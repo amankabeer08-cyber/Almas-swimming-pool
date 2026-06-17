@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Almas Swimming Pool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Login Specific Styles */
+        body.login-page {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            background-color: var(--white);
+            overflow: hidden;
+        }
+
+        .login-split {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-image {
+            flex: 1.2;
+            background: linear-gradient(rgba(0, 51, 102, 0.4), rgba(0, 51, 102, 0.7)), url('assets/images/uploaded_hero.jpg') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .login-image-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInDown 1s ease;
+        }
+
+        .login-image-content h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .login-image-content p {
+            font-size: 1.2rem;
+            max-width: 450px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            line-height: 1.6;
+        }
+
+        .login-form-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-color: var(--off-white);
+            position: relative;
+        }
+
+        /* Decorative blobs for form side */
+        .login-form-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: var(--light-blue);
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .login-form-container::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -50px;
+            width: 250px;
+            height: 250px;
+            background: rgba(0, 230, 230, 0.1);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .login-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 450px;
+            animation: fadeIn 1s ease;
+            z-index: 1;
+            position: relative;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header img {
+            height: 60px;
+            margin: 0 auto 1rem;
+            border-radius: 10px;
+        }
+
+        .login-header h3 {
+            color: var(--dark-blue);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+        }
+
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+
+        .login-form .form-control:focus {
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.1);
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            transition: var(--transition-fast);
+        }
+
+        .login-form .form-control:focus + i,
+        .login-form .form-control:focus ~ i {
+            color: var(--secondary-blue);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .login-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dark);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .login-options input[type="checkbox"] {
+            accent-color: var(--primary-blue);
+            width: 16px;
+            height: 16px;
+        }
+
+        .login-options a {
+            color: var(--secondary-blue);
+            font-weight: 500;
+        }
+
+        .login-options a:hover {
+            color: var(--primary-blue);
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+        }
+
+        .btn-login:hover {
+            box-shadow: 0 5px 15px rgba(0, 86, 179, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .login-footer a {
+            color: var(--secondary-blue);
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: var(--white);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition-fast);
+        }
+
+        .back-home:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .login-split {
+                flex-direction: column;
+            }
+            .login-image {
+                flex: none;
+                height: 35vh;
+            }
+            .login-image-content h2 {
+                font-size: 2.2rem;
+            }
+            .login-image-content p {
+                font-size: 1rem;
+                display: none;
+            }
+            body.login-page {
+                overflow-y: auto;
+                height: auto;
+                min-height: 100vh;
+            }
+            .back-home {
+                top: 20px;
+                left: 20px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            .login-card {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="login-page">
+
+    <div class="login-split">
+        <!-- Left Side Image -->
+        <div class="login-image">
+            <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            <div class="login-image-content">
+                <h2>Welcome Back</h2>
+                <p>Dive into your personalized dashboard. Manage your bookings, view your classes, and explore premium features.</p>
+            </div>
+        </div>
+
+        <!-- Right Side Form -->
+        <div class="login-form-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <img src="assets/images/logo.jpg" alt="Almas Swimming Pool Logo">
+                    <h3>Member Login</h3>
+                    <p>Enter your credentials to access your account</p>
+                </div>
+
+                <form class="login-form" action="#" method="POST" id="loginForm">
+                    <div class="form-group">
+                        <label for="email" style="display: none;">Email Address</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" style="display: none;">Password</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" class="form-control" placeholder="Password" required>
+                        </div>
+                    </div>
+
+                    <div class="login-options" style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                            <label style="margin: 0;">
+                                <input type="checkbox" checked> Remember me
+                            </label>
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                        <a href="admin_login.html" style="font-size: 0.85rem; color: var(--text-muted);">Admin Login <i class="fa-solid fa-shield-halved"></i></a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-login">Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+                </form>
+
+                <div class="login-footer">
+                    Don't have an account? <a href="signup.html">Sign up now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('.btn-login');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
+            btn.disabled = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store user data in localStorage to keep them logged in
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert('Login Successful! Welcome ' + data.user.name);
+                    
+                    if (data.user.isAdmin) {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    alert(data.error || 'Login failed. Please check your credentials.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please make sure the server is running.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

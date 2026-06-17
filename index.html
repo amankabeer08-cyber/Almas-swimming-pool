@@ -26,6 +26,9 @@
             <li><a href="#gallery">Gallery</a></li>
             <li><a href="#booking">Book Now</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li id="authContainer" style="position: relative;">
+                <a href="login.html" id="loginLink" style="color: var(--secondary-blue); font-weight: 700;"><i class="fa-solid fa-user" style="margin-right: 5px;"></i>Login</a>
+            </li>
         </ul>
     </header>
 
@@ -137,25 +140,25 @@
                 <div class="stars">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
-                <p class="testimonial-text">"Very neat and clean swimming pool in Kottakkal. The water quality is excellent and well maintained. Good for families and group bookings."</p>
+                <p class="testimonial-text">"Big pool with good water"</p>
                 <div class="client-info">
-                    <div class="client-avatar" style="background-color: #34a853; color: white;">M</div>
+                    <div class="client-avatar" style="background-color: #ea4335; color: white;">S</div>
                     <div class="client-details">
-                        <h5>Mohammed Shafiq</h5>
-                        <span>Local Guide</span>
+                        <h5>SHANIF MC</h5>
+                        <span>5 stars</span>
                     </div>
                 </div>
             </div>
             <div class="testimonial-card">
                 <div class="stars">
-                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
                 </div>
-                <p class="testimonial-text">"One of the best swimming pools nearby. The coaching is very professional, and they provide a safe environment. Highly recommended."</p>
+                <p class="testimonial-text">"Good. Some what narrow road but not difficult to access"</p>
                 <div class="client-info">
-                    <div class="client-avatar" style="background-color: #ea4335; color: white;">F</div>
+                    <div class="client-avatar" style="background-color: #34a853; color: white;">N</div>
                     <div class="client-details">
-                        <h5>Fathima N.</h5>
-                        <span>2 reviews</span>
+                        <h5>Nishadh Kinan</h5>
+                        <span>4 stars</span>
                     </div>
                 </div>
             </div>
@@ -220,15 +223,16 @@
                     <input type="date" id="date" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="time">Preferred Time *</label>
-                    <select id="time" class="form-control" required>
-                        <option value="">Select a time</option>
-                        <option value="08:00">08:00 AM - 10:00 AM</option>
-                        <option value="10:00">10:00 AM - 12:00 PM</option>
-                        <option value="13:00">01:00 PM - 03:00 PM</option>
-                        <option value="15:00">03:00 PM - 05:00 PM</option>
-                        <option value="17:00">05:00 PM - 07:00 PM</option>
+                    <label for="duration">Duration *</label>
+                    <select id="duration" class="form-control" required>
+                        <option value="" selected disabled>Select Duration</option>
+                        <option value="1">1 Hour</option>
+                        <option value="2">2 Hours</option>
                     </select>
+                </div>
+                <div class="form-group" id="timeGroup">
+                    <label for="time">Preferred Time *</label>
+                    <input type="time" id="time" class="form-control" required>
                 </div>
                 <div class="form-group full-width">
                     <label for="persons">Number of Persons *</label>
@@ -236,7 +240,7 @@
                     <div id="estimatedCost" style="margin-top: 8px; font-weight: 600; color: var(--primary-blue); font-size: 1.1rem;">Estimated Cost: ₹1000</div>
                 </div>
                 <div class="form-group full-width">
-                    <label for="requests">Special Requests</label>
+                    <label for="requests">Special Requests (Optional)</label>
                     <textarea id="requests" class="form-control" placeholder="Any special needs, cabana reservations, etc."></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary booking-btn">Confirm Reservation</button>
@@ -284,13 +288,13 @@
             <div class="contact-map-form">
                 <form class="booking-form" id="contactForm" style="grid-template-columns: 1fr;">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Name" required>
+                        <input type="text" id="contactName" class="form-control" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="Your Email" required>
+                        <input type="email" id="contactEmail" class="form-control" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" placeholder="Your Message" required style="min-height: 120px;"></textarea>
+                        <textarea id="contactMessage" class="form-control" placeholder="Your Message" required style="min-height: 120px;"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Message</button>
                 </form>

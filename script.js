@@ -74,24 +74,89 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Form Submission Handling (Demo)
+    // 5. Form Submission Handling (API Integration)
     const bookingForm = document.getElementById('bookingForm');
     const contactForm = document.getElementById('contactForm');
 
     if (bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
+        bookingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Basic demo validation/alert
-            alert('Thank you for your reservation request! Our team will contact you shortly to confirm your booking.');
-            bookingForm.reset();
+            
+            const bookingData = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                persons: document.getElementById('persons').value,
+                requests: document.getElementById('requests').value
+            };
+
+            const btn = bookingForm.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Processing...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+                
+                if (response.ok) {
+                    alert('Thank you for your reservation! Your booking has been saved to the database.');
+                    bookingForm.reset();
+                } else {
+                    alert('Failed to save booking. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please make sure the server is running.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         });
     }
 
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Your message has been sent successfully. We will get back to you as soon as possible.');
-            contactForm.reset();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            const btn = contactForm.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Sending...';
+            btn.disabled = true;
+
+            try {
+                // 1. Save to Database
+                await fetch('/api/contacts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                // 2. Open WhatsApp
+                const whatsappNumber = '919744033133';
+                const whatsappMessage = `*New Contact Inquiry*\n\n*Name:* ${name}\n*Email:* ${email}\n*Message:* ${message}`;
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                window.open(whatsappUrl, '_blank');
+                
+                alert('Your message has been saved to the database and you will be redirected to WhatsApp!');
+                contactForm.reset();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please make sure the server is running.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         });
     }
 
@@ -168,6 +233,59 @@ document.addEventListener('DOMContentLoaded', () => {
                 lightboxImg.style.animation = 'none';
                 lightboxImg.offsetHeight; /* trigger reflow */
                 lightboxImg.style.animation = null; 
+            }
+        }
+    }
+
+    // 8. Authentication UI Handling
+    const authContainer = document.getElementById('authContainer');
+    if (authContainer) {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            try {
+                const user = JSON.parse(userStr);
+                const initial = user.name.charAt(0).toUpperCase();
+                
+                // Replace login link with profile dropdown
+                authContainer.innerHTML = `
+                    <button class="profile-btn" id="profileBtn">
+                        <div class="profile-avatar">${initial}</div>
+                        <i class="fa-solid fa-chevron-down" style="color: var(--dark-blue); font-size: 0.8rem;"></i>
+                    </button>
+                    <div class="profile-dropdown-menu" id="profileDropdown">
+                        <div class="profile-info">
+                            <h5>${user.name}</h5>
+                            <p>${user.email}</p>
+                        </div>
+                        <button class="btn-logout" id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+                    </div>
+                `;
+
+                // Toggle dropdown
+                const profileBtn = document.getElementById('profileBtn');
+                const profileDropdown = document.getElementById('profileDropdown');
+                
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    profileDropdown.classList.toggle('active');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!authContainer.contains(e.target)) {
+                        profileDropdown.classList.remove('active');
+                    }
+                });
+
+                // Logout
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    localStorage.removeItem('user');
+                    window.location.reload();
+                });
+
+            } catch (e) {
+                console.error('Error parsing user data', e);
+                localStorage.removeItem('user');
             }
         }
     }
