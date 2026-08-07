@@ -129,8 +129,21 @@
     <script>
         // Direct Protection Script
         (function() {
-            const user = sessionStorage.getItem('adminUser');
-            if (!user) {
+            const adminSession = sessionStorage.getItem('adminUser');
+            const userLocal = localStorage.getItem('user');
+            let isAdmin = false;
+
+            if (adminSession) {
+                try { if (JSON.parse(adminSession).isAdmin) isAdmin = true; } catch(e){}
+            }
+            if (!isAdmin && userLocal) {
+                try { 
+                    const u = JSON.parse(userLocal);
+                    if (u.isAdmin || u.email === 'admin@almas.com') isAdmin = true;
+                } catch(e){}
+            }
+
+            if (!isAdmin) {
                 window.location.replace('login.html');
             }
         })();
@@ -240,6 +253,7 @@
         // Log out handler
         document.getElementById('logoutBtn').addEventListener('click', () => {
             sessionStorage.removeItem('adminUser');
+            localStorage.removeItem('user');
             window.location.href = 'login.html';
         });
 

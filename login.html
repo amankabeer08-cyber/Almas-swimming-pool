@@ -189,6 +189,7 @@
                             if (data.user && data.user.isAdmin) {
                                 // Save session
                                 sessionStorage.setItem('adminUser', JSON.stringify(data.user));
+                                localStorage.setItem('user', JSON.stringify(data.user));
                                 window.location.href = 'admin.html';
                             } else {
                                 errorAlert.textContent = 'Unauthorized. Only admins can access the dashboard.';
