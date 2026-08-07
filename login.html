@@ -164,8 +164,8 @@
                     e.preventDefault();
                     errorAlert.style.display = 'none';
 
-                    const email = document.getElementById('loginEmail').value;
-                    const password = document.getElementById('loginPassword').value;
+                    const email = document.getElementById('loginEmail').value.trim();
+                    const password = document.getElementById('loginPassword').value.trim();
 
                     try {
                         let response;
@@ -189,6 +189,7 @@
                             if (data.user && data.user.isAdmin) {
                                 // Save session
                                 sessionStorage.setItem('adminUser', JSON.stringify(data.user));
+                                localStorage.setItem('user', JSON.stringify(data.user));
                                 window.location.href = 'admin.html';
                             } else {
                                 errorAlert.textContent = 'Unauthorized. Only admins can access the dashboard.';
