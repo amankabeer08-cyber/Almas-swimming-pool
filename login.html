@@ -164,8 +164,8 @@
                     e.preventDefault();
                     errorAlert.style.display = 'none';
 
-                    const email = document.getElementById('loginEmail').value;
-                    const password = document.getElementById('loginPassword').value;
+                    const email = document.getElementById('loginEmail').value.trim();
+                    const password = document.getElementById('loginPassword').value.trim();
 
                     try {
                         let response;

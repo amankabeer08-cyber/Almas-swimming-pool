@@ -51,11 +51,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )`);
 
-        // Seed Admin User
+        // Seed Admin Users
         bcrypt.hash('admin123', 10, (err, hash) => {
             if (!err) {
                 db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', ['Admin', 'admin@almas.com', hash], function(err) {
-                    // Ignore error if it already exists
+                    if (err) {
+                        db.run('UPDATE users SET password = ? WHERE LOWER(TRIM(email)) = ?', [hash, 'admin@almas.com']);
+                    }
+                });
+                db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', ['Almas Admin', 'amankabeer2008@gmail.com', hash], function(err) {
+                    if (err) {
+                        db.run('UPDATE users SET password = ? WHERE LOWER(TRIM(email)) = ?', [hash, 'amankabeer2008@gmail.com']);
+                    }
                 });
             }
         });
@@ -69,9 +76,12 @@ app.post('/api/signup', async (req, res) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'All fields are required' });
 
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = name.trim();
+
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword], function(err) {
+        db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [cleanName, cleanEmail, hashedPassword], function(err) {
             if (err) {
                 if (err.message.includes('UNIQUE constraint failed')) {
                     return res.status(400).json({ error: 'Email already exists' });
@@ -90,13 +100,16 @@ app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
 
-    db.get('SELECT * FROM users WHERE email = ?', [email], async (err, user) => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    db.get('SELECT * FROM users WHERE LOWER(TRIM(email)) = ?', [cleanEmail], async (err, user) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!user) return res.status(401).json({ error: 'Invalid email or password' });
 
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-            const isAdmin = user.email === 'admin@almas.com';
+            const userEmail = user.email ? user.email.trim().toLowerCase() : '';
+            const isAdmin = userEmail === 'admin@almas.com' || userEmail === 'amankabeer2008@gmail.com' || userEmail.includes('admin');
             res.json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email, isAdmin } });
         } else {
             res.status(401).json({ error: 'Invalid email or password' });
@@ -109,13 +122,15 @@ app.post('/api/reset-password', async (req, res) => {
     const { email, newPassword } = req.body;
     if (!email || !newPassword) return res.status(400).json({ error: 'Email and new password are required' });
 
-    db.get('SELECT * FROM users WHERE email = ?', [email], async (err, user) => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    db.get('SELECT * FROM users WHERE LOWER(TRIM(email)) = ?', [cleanEmail], async (err, user) => {
         if (err) return res.status(500).json({ error: err.message });
         if (!user) return res.status(404).json({ error: 'No account found with this email address' });
 
         try {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
-            db.run('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email], (updateErr) => {
+            db.run('UPDATE users SET password = ? WHERE LOWER(TRIM(email)) = ?', [hashedPassword, cleanEmail], (updateErr) => {
                 if (updateErr) return res.status(500).json({ error: updateErr.message });
                 res.json({ message: 'Password updated successfully. You can now log in.' });
             });

@@ -355,8 +355,8 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in...';
             btn.disabled = true;
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
 
             try {
                 const response = await fetch('/api/login', {
