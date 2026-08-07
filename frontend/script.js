@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Sticky Header
     const header = document.getElementById('header');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');
-    
+
     mobileMenuBtn.addEventListener('click', () => {
         navLinks.classList.toggle('active');
-        
+
         // Toggle icon between bars and times (close)
         const icon = mobileMenuBtn.querySelector('i');
         if (navLinks.classList.contains('active')) {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rootMargin: "0px 0px -50px 0px"
     };
 
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+    const revealOnScroll = new IntersectionObserver(function (entries, observer) {
         entries.forEach(entry => {
             if (!entry.isIntersecting) {
                 return;
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (bookingForm) {
         bookingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const bookingData = {
                 name: document.getElementById('fullName').value,
                 email: document.getElementById('email').value,
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(bookingData)
                 });
-                
+
                 if (response.ok) {
                     alert('Thank you for your reservation! Your booking has been saved to the database.');
                     bookingForm.reset();
@@ -124,11 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const name = document.getElementById('contactName').value;
             const email = document.getElementById('contactEmail').value;
             const message = document.getElementById('contactMessage').value;
-            
+
             const btn = contactForm.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             btn.innerHTML = 'Sending...';
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const whatsappMessage = `*New Contact Inquiry*\n\n*Name:* ${name}\n*Email:* ${email}\n*Message:* ${message}`;
                 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
                 window.open(whatsappUrl, '_blank');
-                
+
                 alert('Your message has been saved to the database and you will be redirected to WhatsApp!');
                 contactForm.reset();
             } catch (error) {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', () => {
         let current = '';
-        
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentImages = [];
     let currentIndex = 0;
 
-    if(lightbox) {
+    if (lightbox) {
         galleryItems.forEach(item => {
             item.addEventListener('click', () => {
                 const imagesAttr = item.getAttribute('data-images');
@@ -228,11 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         function updateLightboxImage() {
-            if(currentImages.length > 0) {
+            if (currentImages.length > 0) {
                 lightboxImg.src = currentImages[currentIndex];
                 lightboxImg.style.animation = 'none';
                 lightboxImg.offsetHeight; /* trigger reflow */
-                lightboxImg.style.animation = null; 
+                lightboxImg.style.animation = null;
             }
         }
     }
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const user = JSON.parse(userStr);
                 const initial = user.name.charAt(0).toUpperCase();
-                
+
                 // Replace login link with profile dropdown
                 authContainer.innerHTML = `
                     <button class="profile-btn" id="profileBtn">
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Toggle dropdown
                 const profileBtn = document.getElementById('profileBtn');
                 const profileDropdown = document.getElementById('profileDropdown');
-                
+
                 profileBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     profileDropdown.classList.toggle('active');

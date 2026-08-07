@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Booking | Almas Swimming Pool</title>
+    <meta name="description" content="Book a swimming slot, get in touch with our team, or locate Almas Swimming Pool on Google Maps. Fast responses and premium service.">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Page Styles for Contact -->
+    <style>
+        .contact-hero {
+            background: linear-gradient(rgba(0, 90, 156, 0.6), rgba(10, 17, 24, 0.8)), url('images/pool_2.jpg') no-repeat center center/cover;
+            padding: 150px 0 100px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .contact-container {
+            padding: 80px 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
+            margin-bottom: 80px;
+            align-items: start;
+        }
+
+        .contact-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .info-card {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .info-icon {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            background: rgba(0, 174, 239, 0.1);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-details h4 {
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+        }
+
+        .info-details p {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        /* Maps Section */
+        .maps-section {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            height: 350px;
+            position: relative;
+        }
+
+        .maps-section iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Form Layouts */
+        .form-card h3 {
+            font-size: 1.6rem;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .booking-est-summary {
+            background: rgba(0, 174, 239, 0.08);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .booking-est-summary span {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .booking-est-summary span {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpg" alt="Almas Swimming Pool" class="logo-img">
+                <span class="logo-text">ALMAS POOL</span>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link active">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="user_login.html" class="btn btn-outline" style="padding: 8px 18px; font-size: 0.85rem;"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="login.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.85rem;"><i class="fa-solid fa-user-shield"></i> Admin Login</a>
+                <div class="mobile-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1 class="section-title" style="color: #fff;">Get In Touch</h1>
+            <p class="section-subtitle" style="color: #fff; opacity: 0.9;">Plan your visit, schedule coaching, or book private swimming slots today.</p>
+        </div>
+    </section>
+
+    <!-- Contact & Map Grid -->
+    <section class="contact-container">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Info column -->
+                <div class="contact-info-list reveal">
+                    <div class="glass-card info-card">
+                        <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="info-details">
+                            <h4>Phone</h4>
+                            <p><a href="tel:+919744033133">+91 97440 33133</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card info-card">
+                        <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                        <div class="info-details">
+                            <h4>WhatsApp</h4>
+                            <p><a href="https://wa.me/919744033133" target="_blank">+91 97440 33133</a></p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card info-card">
+                        <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="info-details">
+                            <h4>Email</h4>
+                            <p><a href="mailto:almaspool47@gmail.com">almaspool47@gmail.com</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Map Frame -->
+                    <div class="maps-section">
+                        <!-- Redirect embed map pointing to specified location. Note: standard static link is wrapped in iframe to show location mock -->
+                        <iframe src="https://maps.google.com/maps?q=Almas%20Swimming%20Pool,%20Kottakkal,%20Malappuram&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <!-- Contact Form column -->
+                <div class="glass-card form-card reveal">
+                    <h3><i class="fa-solid fa-paper-plane"></i> Send Us An Enquiry</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="contactName">Full Name</label>
+                            <input type="text" id="contactName" class="form-control" required placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email Address</label>
+                            <input type="email" id="contactEmail" class="form-control" required placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message / Query</label>
+                            <textarea id="contactMessage" class="form-control" required placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Booking Section -->
+            <div id="booking-section" class="glass-card form-card reveal" style="max-width: 900px; margin: 0 auto; padding: 40px;">
+                <h3><i class="fa-solid fa-calendar-check"></i> Book Your Swimming Slot</h3>
+                <p style="margin-bottom: 30px; opacity: 0.8;">Fill in the form below. Our team will verify slot availability and get in touch with you immediately.</p>
+                
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookingName">Name</label>
+                            <input type="text" id="bookingName" class="form-control" required placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingPhone">Phone Number</label>
+                            <input type="tel" id="bookingPhone" class="form-control" required placeholder="Enter mobile number">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookingEmail">Email (Optional)</label>
+                            <input type="email" id="bookingEmail" class="form-control" placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingDate">Date</label>
+                            <input type="date" id="bookingDate" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookingTime">Preferred Time Slot (AM / PM)</label>
+                            <select id="bookingTime" class="form-control" required style="background: rgba(15, 23, 42, 0.6); color: #fff; border: 1px solid rgba(255,255,255,0.15); cursor: pointer;">
+                                <option value="" disabled selected>-- Choose Time Slot (AM / PM) --</option>
+                                <optgroup label="🌅 Morning Slots (AM)" style="background: #0f172a; color: #00e5ff;">
+                                    <option value="06:00 AM - 07:00 AM">06:00 AM - 07:00 AM</option>
+                                    <option value="07:00 AM - 08:00 AM">07:00 AM - 08:00 AM</option>
+                                    <option value="08:00 AM - 09:00 AM">08:00 AM - 09:00 AM</option>
+                                    <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                                    <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                                    <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                                </optgroup>
+                                <optgroup label="☀️ Afternoon Slots (PM)" style="background: #0f172a; color: #00e5ff;">
+                                    <option value="12:00 PM - 01:00 PM">12:00 PM - 01:00 PM</option>
+                                    <option value="01:00 PM - 02:00 PM">01:00 PM - 02:00 PM</option>
+                                    <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                                    <option value="03:00 PM - 04:00 PM">03:00 PM - 04:00 PM</option>
+                                    <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+                                    <option value="05:00 PM - 06:00 PM">05:00 PM - 06:00 PM</option>
+                                </optgroup>
+                                <optgroup label="🌙 Evening & Night Slots (PM)" style="background: #0f172a; color: #00e5ff;">
+                                    <option value="06:00 PM - 07:00 PM">06:00 PM - 07:00 PM</option>
+                                    <option value="07:00 PM - 08:00 PM">07:00 PM - 08:00 PM</option>
+                                    <option value="08:00 PM - 09:00 PM">08:00 PM - 09:00 PM</option>
+                                    <option value="09:00 PM - 10:00 PM">09:00 PM - 10:00 PM</option>
+                                    <option value="10:00 PM - 11:00 PM">10:00 PM - 11:00 PM</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="peopleCount">Swimmers (Above 5 Years)</label>
+                                <input type="number" id="peopleCount" class="form-control" value="1" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="kidsCount">Kids (Under 5 Years)</label>
+                                <input type="number" id="kidsCount" class="form-control" value="0" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bookingMessage">Message / Special Requests (Optional)</label>
+                        <textarea id="bookingMessage" class="form-control" placeholder="Write any extra requirements here..."></textarea>
+                    </div>
+
+                    <div class="booking-est-summary">
+                        <p>Estimated Pricing Summary (Based on headcount)</p>
+                        <p>Total Estimated Cost: <span id="estimatedCost">₹1000</span></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary" style="width: 100%; font-size: 1.05rem;">Book Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="logo-container">
+                    <img src="images/logo.jpg" alt="Almas Swimming Pool" class="logo-img">
+                    <span class="logo-text">ALMAS POOL</span>
+                </a>
+                <p>Almas Swimming Pool is dedicated to providing clean, safe, and family-friendly swimming facilities for all age groups in our community.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/almas_swimmingpool" class="social-icon" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://facebook.com/Aman almas" class="social-icon" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Our Services</h4>
+                <ul>
+                    <li><a href="services.html">Pool Rental</a></li>
+                    <li><a href="services.html">Coaching Program</a></li>
+                    <li><a href="pricing.html">Price Estimator</a></li>
+                    <li><a href="contact.html#booking-section">Online Booking</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contact Info</h4>
+                <p><i class="fa-solid fa-phone"></i> <a href="tel:+919744033133" style="color: inherit; text-decoration: none;">+91 97440 33133</a></p>
+                <p><i class="fa-brands fa-whatsapp"></i> +91 97440 33133</p>
+                <p><i class="fa-solid fa-envelope"></i> almaspool47@gmail.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Almas Swimming Pool, Kottakkal, Malappuram</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Almas Swimming Pool. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <a href="https://wa.me/919744033133" class="floating-btn whatsapp" target="_blank" aria-label="WhatsApp Us">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="tooltip">WhatsApp Us</span>
+        </a>
+        <a href="tel:+919744033133" class="floating-btn call" aria-label="Call Us">
+            <i class="fa-solid fa-phone"></i>
+            <span class="tooltip">Call Us</span>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script src="js/booking.js"></script>
+</body>
+</html>

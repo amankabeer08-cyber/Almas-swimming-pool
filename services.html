@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | Almas Swimming Pool</title>
+    <meta name="description" content="Explore the services offered at Almas Swimming Pool, including swimming pool rentals for events and professional swimming coaching for students.">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Page Styles for Services -->
+    <style>
+        .services-hero {
+            background: linear-gradient(rgba(0, 90, 156, 0.6), rgba(10, 17, 24, 0.8)), url('images/pool_2.jpg') no-repeat center center/cover;
+            padding: 150px 0 100px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .services-container {
+            padding: 80px 0;
+        }
+
+        .service-block {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            margin-bottom: 80px;
+            align-items: center;
+        }
+
+        .service-block:nth-child(even) {
+            grid-template-columns: 1.2fr 1fr;
+        }
+
+        .service-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .service-img {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .service-desc h3 {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .service-desc p {
+            font-size: 1.05rem;
+            opacity: 0.85;
+            margin-bottom: 25px;
+        }
+
+        .service-features-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .service-features-list li {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .service-features-list li i {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 992px) {
+            .service-block, .service-block:nth-child(even) {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .service-block:nth-child(even) .service-img {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpg" alt="Almas Swimming Pool" class="logo-img">
+                <span class="logo-text">ALMAS POOL</span>
+            </a>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="services.html" class="nav-link active">Services</a></li>
+                <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <a href="user_login.html" class="btn btn-outline" style="padding: 8px 18px; font-size: 0.85rem;"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="login.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.85rem;"><i class="fa-solid fa-user-shield"></i> Admin Login</a>
+                <div class="mobile-toggle" id="menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Services Hero Section -->
+    <section class="services-hero">
+        <div class="container">
+            <h1 class="section-title" style="color: #fff;">Our Pool Services</h1>
+            <p class="section-subtitle" style="color: #fff; opacity: 0.9;">Professional coaching, event rentals, and customized options for every swimmer.</p>
+        </div>
+    </section>
+
+    <!-- Detailed Services List -->
+    <section class="services-container">
+        <div class="container">
+            <!-- Service 1: Swimming Pool Rental -->
+            <div class="service-block">
+                <div class="service-img reveal">
+                    <img src="images/pool_day.jpg" alt="Almas covered swimming pool rental venue">
+                </div>
+                <div class="service-desc reveal">
+                    <h3>Swimming Pool Rental</h3>
+                    <p>Looking for a spacious and pristine swimming pool venue for your events, group gatherings, pool parties, or family get-togethers? We offer booking slots for private rental. Spend quality time with complete privacy in our high-hygiene facility.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fa-solid fa-circle-check"></i> Private booking slots for families & organizations</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Great atmosphere with beautiful green surroundings</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Access to kids and adult pools</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Changing rooms and parking included</li>
+                    </ul>
+                    <a href="contact.html#booking-section" class="btn btn-primary">Rent Pool Now</a>
+                </div>
+            </div>
+
+            <!-- Service 2: Coaching & Training -->
+            <div class="service-block">
+                <div class="service-desc reveal">
+                    <h3>Coaching & Training for Students</h3>
+                    <p>In partnership with <strong>Almas Sports Academy</strong>, we run premium swimming coaching camps and academy programs. We cater to students of all age groups, helping beginners find confidence in the water and coaching advanced swimmers to perfect their strokes.</p>
+                    <ul class="service-features-list">
+                        <li><i class="fa-solid fa-circle-check"></i> Certified, highly experienced swim coaches</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Structured programs for children and school groups</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Separate beginner coaching areas (safe environment)</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Interactive sessions with individual attention</li>
+                    </ul>
+                    <a href="contact.html#booking-section" class="btn btn-secondary">Inquire About Coaching</a>
+                </div>
+                <div class="service-img reveal">
+                    <img src="images/pool_night.jpg" alt="Night ambient swimming facility">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="logo-container">
+                    <img src="images/logo.jpg" alt="Almas Swimming Pool" class="logo-img">
+                    <span class="logo-text">ALMAS POOL</span>
+                </a>
+                <p>Almas Swimming Pool is dedicated to providing clean, safe, and family-friendly swimming facilities for all age groups in our community.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/almas_swimmingpool" class="social-icon" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://facebook.com/Aman almas" class="social-icon" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h4>Our Services</h4>
+                <ul>
+                    <li><a href="services.html">Pool Rental</a></li>
+                    <li><a href="services.html">Coaching Program</a></li>
+                    <li><a href="pricing.html">Price Estimator</a></li>
+                    <li><a href="contact.html#booking-section">Online Booking</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contact Info</h4>
+                <p><i class="fa-solid fa-phone"></i> <a href="tel:+919744033133" style="color: inherit; text-decoration: none;">+91 97440 33133</a></p>
+                <p><i class="fa-brands fa-whatsapp"></i> +91 97440 33133</p>
+                <p><i class="fa-solid fa-envelope"></i> almaspool47@gmail.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> Almas Swimming Pool, Kottakkal, Malappuram</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Almas Swimming Pool. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <a href="https://wa.me/919744033133" class="floating-btn whatsapp" target="_blank" aria-label="WhatsApp Us">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span class="tooltip">WhatsApp Us</span>
+        </a>
+        <a href="tel:+919744033133" class="floating-btn call" aria-label="Call Us">
+            <i class="fa-solid fa-phone"></i>
+            <span class="tooltip">Call Us</span>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+</body>
+</html>

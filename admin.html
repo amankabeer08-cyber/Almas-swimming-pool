@@ -4,290 +4,322 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Almas Swimming Pool</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: var(--off-white);
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-body);
+        .admin-section {
+            padding: 120px 0 80px;
+            min-height: 100vh;
         }
-        
-        .admin-navbar {
-            background-color: var(--dark-blue);
-            color: white;
-            padding: 1rem 2rem;
+
+        .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .admin-navbar h2 {
-            margin: 0;
-            font-size: 1.5rem;
+        .dashboard-title h2 {
+            font-size: 2rem;
+            color: var(--secondary-color);
         }
 
-        .btn-logout {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-logout:hover {
-            background-color: #cc0000;
-        }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .tabs {
+        .admin-nav-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 15px;
+            margin-bottom: 30px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
 
-        .tab-btn {
+        .admin-tab {
             background: none;
             border: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
+            color: var(--text-color);
             padding: 10px 20px;
-            border-radius: 5px;
-            transition: var(--transition-fast);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
         }
 
-        .tab-btn.active {
-            background-color: var(--primary-blue);
-            color: white;
+        .admin-tab.active {
+            background: var(--secondary-color);
+            color: #fff;
         }
 
-        .tab-btn:hover:not(.active) {
-            background-color: var(--light-blue);
-            color: var(--primary-blue);
+        .admin-tab:hover:not(.active) {
+            background: rgba(0, 174, 239, 0.1);
         }
 
-        .tab-content {
-            display: none;
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
+        /* Dashboard Tables */
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
 
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        table {
+        .admin-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
-        }
-
-        th, td {
-            padding: 12px 15px;
             text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .admin-table th {
+            background: rgba(0, 90, 156, 0.15);
+            padding: 15px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .admin-table td {
+            padding: 15px;
             border-bottom: 1px solid var(--border-color);
+            opacity: 0.95;
         }
 
-        th {
-            background-color: var(--light-blue);
-            color: var(--dark-blue);
-            font-weight: 600;
+        .admin-table tr:hover td {
+            background: rgba(0, 174, 239, 0.04);
         }
 
-        tr:hover {
-            background-color: #f1f7fd;
-        }
-
-        .empty-state {
+        .no-data {
             text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
+            padding: 40px;
             font-style: italic;
+            opacity: 0.7;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(0, 229, 255, 0.15);
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .status-badge {
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <script>
+        // Direct Protection Script
+        (function() {
+            const user = sessionStorage.getItem('adminUser');
+            if (!user) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
 </head>
 <body>
 
-    <nav class="admin-navbar">
-        <h2><i class="fa-solid fa-shield-halved"></i> Admin Dashboard</h2>
-        <button class="btn-logout" id="adminLogoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
-    </nav>
-
-    <div class="dashboard-container">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('bookings')"><i class="fa-solid fa-calendar-check"></i> Bookings</button>
-            <button class="tab-btn" onclick="switchTab('contacts')"><i class="fa-solid fa-envelope"></i> Messages</button>
-            <button class="tab-btn" onclick="switchTab('users')"><i class="fa-solid fa-users"></i> Users</button>
-        </div>
-
-        <!-- Bookings Tab -->
-        <div id="bookings" class="tab-content active">
-            <h3>Recent Bookings</h3>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date & Time</th>
-                            <th>Name</th>
-                            <th>Email & Phone</th>
-                            <th>Duration / Persons</th>
-                            <th>Special Requests</th>
-                            <th>Submitted At</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bookingsTableBody">
-                        <tr><td colspan="6" class="empty-state">Loading bookings...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Contacts Tab -->
-        <div id="contacts" class="tab-content">
-            <h3>Contact Messages</h3>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Message</th>
-                            <th>Submitted At</th>
-                        </tr>
-                    </thead>
-                    <tbody id="contactsTableBody">
-                        <tr><td colspan="4" class="empty-state">Loading messages...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Users Tab -->
-        <div id="users" class="tab-content">
-            <h3>Registered Users</h3>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        <tr><td colspan="3" class="empty-state">Loading users...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Security check
-        const userStr = localStorage.getItem('user');
-        if (!userStr) {
-            window.location.href = 'login.html';
-        } else {
-            const user = JSON.parse(userStr);
-            if (!user.isAdmin) {
-                alert('Access Denied. Admins only.');
-                window.location.href = 'index.html';
-            }
-        }
-
-        // Tab Switching Logic
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    <!-- Header Navigation -->
+    <header class="scrolled">
+        <div class="container header-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpg" alt="Almas Swimming Pool" class="logo-img">
+                <span class="logo-text">ALMAS POOL</span>
+            </a>
             
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
+            <div class="nav-actions">
+                <a href="index.html" class="theme-btn" aria-label="Go to Home" title="Go to Home" style="display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                <button id="logoutBtn" class="btn btn-outline" style="padding: 8px 18px; font-size: 0.85rem;"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+    </header>
 
-        // Logout
-        document.getElementById('adminLogoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('user');
+    <!-- Admin Section -->
+    <section class="admin-section">
+        <div class="container">
+            <div class="dashboard-header reveal">
+                <div class="dashboard-title">
+                    <h2><i class="fa-solid fa-gauge"></i> Management Dashboard</h2>
+                    <p style="opacity: 0.8;">Monitor current slot bookings, customer contacts, and reservations.</p>
+                </div>
+            </div>
+
+            <!-- Tab Toggles -->
+            <div class="admin-nav-tabs reveal">
+                <button class="admin-tab active" onclick="switchTab('bookingsPanel', this)">Bookings Slot</button>
+                <button class="admin-tab" onclick="switchTab('contactsPanel', this)">Contact Messages</button>
+            </div>
+
+            <!-- Bookings Panel -->
+            <div id="bookingsPanel" class="tab-panel active reveal">
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-calendar-alt"></i> Entered Bookings</h3>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Guest Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Persons</th>
+                                    <th>Special Request</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookingsTableBody">
+                                <tr>
+                                    <td colspan="9" class="no-data"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading bookings data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contacts Panel -->
+            <div id="contactsPanel" class="tab-panel reveal">
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-envelope-open-text"></i> Message Queries</h3>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Message Details</th>
+                                    <th>Date Received</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contactsTableBody">
+                                <tr>
+                                    <td colspan="5" class="no-data"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading messages...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 Almas Swimming Pool. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/script.js"></script>
+    <script>
+        // Log out handler
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.removeItem('adminUser');
             window.location.href = 'login.html';
         });
 
-        // Data Fetching Logic
-        async function fetchAdminData() {
+        // Tab Switcher
+        function switchTab(panelId, btn) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(panelId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Fetch Bookings & Contacts
+        async function fetchDashboardData() {
+            // Bookings Fetch
             try {
-                // Fetch Bookings
-                const bookingsRes = await fetch('/api/admin/bookings');
-                const bookings = await bookingsRes.json();
-                const bBody = document.getElementById('bookingsTableBody');
-                if (bookings.length === 0) {
-                    bBody.innerHTML = '<tr><td colspan="6" class="empty-state">No bookings found.</td></tr>';
+                const response = await fetch('http://localhost:3000/api/admin/bookings');
+                const bookings = await response.json();
+                
+                const bookingsTBody = document.getElementById('bookingsTableBody');
+                bookingsTBody.innerHTML = '';
+                
+                if (bookings && bookings.length > 0) {
+                    bookings.forEach(booking => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>#${booking.id}</td>
+                            <td style="font-weight: 600;">${booking.name}</td>
+                            <td><a href="tel:${booking.phone}">${booking.phone}</a></td>
+                            <td>${booking.email || 'N/A'}</td>
+                            <td style="color: var(--secondary-color); font-weight: 600;">${booking.date}</td>
+                            <td>${booking.time}</td>
+                            <td>${booking.persons} Swimmers</td>
+                            <td style="font-size: 0.85rem;">${booking.requests || 'None'}</td>
+                            <td><span class="status-badge">Reserved</span></td>
+                        `;
+                        bookingsTBody.appendChild(tr);
+                    });
                 } else {
-                    bBody.innerHTML = bookings.map(b => `
-                        <tr>
-                            <td><strong>${b.date}</strong><br>${b.time || 'N/A'}</td>
-                            <td>${b.name}</td>
-                            <td>${b.email}<br>${b.phone}</td>
-                            <td>${b.persons} Person(s)</td>
-                            <td>${b.requests || '-'}</td>
-                            <td>${new Date(b.created_at).toLocaleString()}</td>
-                        </tr>
-                    `).join('');
+                    bookingsTBody.innerHTML = '<tr><td colspan="9" class="no-data">No slot bookings found.</td></tr>';
                 }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('bookingsTableBody').innerHTML = '<tr><td colspan="9" class="no-data" style="color: #ef4444;">Error connecting to API server.</td></tr>';
+            }
 
-                // Fetch Contacts
-                const contactsRes = await fetch('/api/admin/contacts');
-                const contacts = await contactsRes.json();
-                const cBody = document.getElementById('contactsTableBody');
-                if (contacts.length === 0) {
-                    cBody.innerHTML = '<tr><td colspan="4" class="empty-state">No messages found.</td></tr>';
+            // Contacts Fetch
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/contacts');
+                const contacts = await response.json();
+                
+                const contactsTBody = document.getElementById('contactsTableBody');
+                contactsTBody.innerHTML = '';
+                
+                if (contacts && contacts.length > 0) {
+                    contacts.forEach(contact => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>#${contact.id}</td>
+                            <td style="font-weight: 600;">${contact.name}</td>
+                            <td>${contact.email}</td>
+                            <td style="font-size: 0.85rem;">${contact.message}</td>
+                            <td>${new Date(contact.created_at).toLocaleDateString()}</td>
+                        `;
+                        contactsTBody.appendChild(tr);
+                    });
                 } else {
-                    cBody.innerHTML = contacts.map(c => `
-                        <tr>
-                            <td>${c.name}</td>
-                            <td>${c.email}</td>
-                            <td>${c.message}</td>
-                            <td>${new Date(c.created_at).toLocaleString()}</td>
-                        </tr>
-                    `).join('');
+                    contactsTBody.innerHTML = '<tr><td colspan="5" class="no-data">No contact queries found.</td></tr>';
                 }
-
-                // Fetch Users
-                const usersRes = await fetch('/api/admin/users');
-                const users = await usersRes.json();
-                const uBody = document.getElementById('usersTableBody');
-                if (users.length === 0) {
-                    uBody.innerHTML = '<tr><td colspan="3" class="empty-state">No users found.</td></tr>';
-                } else {
-                    uBody.innerHTML = users.map(u => `
-                        <tr>
-                            <td>#${u.id}</td>
-                            <td>${u.name}</td>
-                            <td>${u.email}</td>
-                        </tr>
-                    `).join('');
-                }
-
-            } catch (error) {
-                console.error('Error fetching admin data:', error);
-                alert('Error connecting to the server to fetch data.');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('contactsTableBody').innerHTML = '<tr><td colspan="5" class="no-data" style="color: #ef4444;">Error connecting to API server.</td></tr>';
             }
         }
 
-        // Initialize
-        fetchAdminData();
+        document.addEventListener('DOMContentLoaded', fetchDashboardData);
     </script>
 </body>
 </html>

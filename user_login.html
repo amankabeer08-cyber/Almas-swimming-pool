@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Almas Swimming Pool</title>
+    
+    <!-- Modern Typography: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-glow: #00e5ff;
+            --secondary-glow: #0077ff;
+            --glass-bg: rgba(15, 23, 42, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 119, 255, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.15), transparent 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            color: var(--text-main);
+        }
+
+        /* Animated Bubbles Background */
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), rgba(255,255,255,0.01));
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.1), 0 0 10px rgba(0, 229, 255, 0.2);
+            animation: float 10s infinite ease-in;
+            opacity: 0;
+        }
+
+        .bubble:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-duration: 12s; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 30%; width: 40px; height: 40px; animation-duration: 9s; animation-delay: 2s; }
+        .bubble:nth-child(3) { left: 50%; width: 60px; height: 60px; animation-duration: 15s; animation-delay: 1s; }
+        .bubble:nth-child(4) { left: 70%; width: 30px; height: 30px; animation-duration: 8s; animation-delay: 4s; }
+        .bubble:nth-child(5) { left: 90%; width: 90px; height: 90px; animation-duration: 14s; animation-delay: 0s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-1000px) scale(1.5); opacity: 0; }
+        }
+
+        /* Ambient Glow Behind Card */
+        .ambient-glow {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            border-radius: 50%;
+            animation: pulseGlow 8s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.15; }
+            100% { transform: scale(1.2); opacity: 0.25; }
+        }
+
+        /* Glassmorphic Login Card */
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 3rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUpFade 0.8s 0.2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUpFade {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header img {
+            height: 50px;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: var(--transition);
+        }
+        
+        .login-header img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,229,255,0.3);
+        }
+
+        .login-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 16px 16px 48px;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: transparent;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 48px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        /* Floating Label Effect */
+        .form-control:focus ~ label,
+        .form-control:not(:placeholder-shown) ~ label {
+            top: 0;
+            transform: translateY(-50%) scale(0.85);
+            background: #0d1222;
+            padding: 0 8px;
+            border-radius: 4px;
+            color: var(--primary-glow);
+            left: 12px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .form-control:focus ~ .input-icon {
+            color: var(--primary-glow);
+            text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+        }
+
+        /* Options */
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .checkbox-wrapper:hover {
+            color: var(--text-main);
+        }
+
+        .checkbox-wrapper input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .checkbox-wrapper input:checked {
+            background: var(--primary-glow);
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 10px rgba(0,229,255,0.4);
+        }
+
+        .checkbox-wrapper input:checked::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: #000;
+            position: absolute;
+            font-size: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .forgot-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-link:hover {
+            color: var(--primary-glow);
+            text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+
+        /* Primary Button */
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--secondary-glow), var(--primary-glow));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 119, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:active {
+            transform: translateY(1px);
+        }
+
+        /* Footer */
+        .login-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 1.5rem;
+        }
+
+        .login-footer a {
+            color: var(--primary-glow);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+
+        .login-footer a:hover {
+            text-shadow: 0 0 10px rgba(0,229,255,0.5);
+        }
+
+        .admin-link {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .admin-link:hover {
+            color: var(--text-muted);
+        }
+
+        /* Back Home Button */
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 500px) {
+            .login-card {
+                margin: 20px;
+                padding: 2rem;
+            }
+            .back-btn {
+                top: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Home
+    </a>
+
+    <!-- Animated Bubbles -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- Ambient Glow -->
+    <div class="ambient-glow"></div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+        <div class="login-header">
+            <!-- Ensure path works relative to the html -->
+            <img src="images/logo.jpg" alt="Almas Pool" onerror="this.src='https://via.placeholder.com/150x50/0f172a/00e5ff?text=Almas+Pool'">
+            <h2>Welcome Back</h2>
+            <p>Access your personalized member portal</p>
+        </div>
+
+        <form id="loginForm" action="#" method="POST">
+            <div class="form-group">
+                <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+                <i class="fa-solid fa-envelope input-icon"></i>
+                <label for="email">Email Address</label>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                <i class="fa-solid fa-lock input-icon"></i>
+                <label for="password">Password</label>
+            </div>
+
+            <div class="login-options">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" checked>
+                    <span>Remember me</span>
+                </label>
+                <a href="#" id="forgotPasswordBtn" class="forgot-link">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login">
+                Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+        </form>
+
+        <div class="login-footer">
+            New to Almas? <a href="signup.html">Create an account</a>
+        </div>
+        
+        <a href="login.html" class="admin-link">
+            <i class="fa-solid fa-shield-halved" style="margin-right: 5px;"></i> Admin Access
+        </a>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-location-dot"></i> Almas Swimming Pool, Kottakkal, Malappuram
+        </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div id="resetPasswordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
+        <div style="background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 24px; width: 100%; max-width: 440px; padding: 2.5rem; box-shadow: 0 30px 60px rgba(0,0,0,0.6); color: #fff; position: relative; animation: slideUpFade 0.4s ease;">
+            <button id="closeResetModal" style="position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; width: 34px; height: 34px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1rem; cursor: pointer;"><i class="fa-solid fa-times"></i></button>
+            
+            <div style="text-align: center; margin-bottom: 1.8rem;">
+                <div style="width: 60px; height: 60px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 12px; font-size: 1.5rem; color: #00e5ff;">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <h3 style="font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Reset Password</h3>
+                <p style="color: #94a3b8; font-size: 0.9rem;">Choose how you want to recover your account</p>
+            </div>
+
+            <form id="resetForm">
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <input type="email" id="resetEmail" class="form-control" placeholder="Registered Email" required>
+                    <i class="fa-solid fa-envelope input-icon"></i>
+                    <label for="resetEmail">Registered Email</label>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <input type="password" id="resetNewPassword" class="form-control" placeholder="New Password" required minlength="6">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <label for="resetNewPassword">New Password</label>
+                </div>
+
+                <button type="submit" id="resetSubmitBtn" class="btn-login" style="margin-bottom: 1rem;">
+                    Update Password <i class="fa-solid fa-rotate"></i>
+                </button>
+            </form>
+
+            <div style="text-align: center; font-size: 0.85rem; color: #94a3b8; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 1.2rem; margin-top: 0.5rem;">
+                <p style="margin-bottom: 10px;">Having trouble? Contact Support:</p>
+                <a href="https://wa.me/919744033133?text=Hi%2C%20I%20need%20help%20resetting%20my%20Almas%20Pool%20account%20password." target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3); color: #25d366; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: 0.2s;">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1.1rem;"></i> Reset via WhatsApp Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Forgot Password Modal Toggle
+        const forgotBtn = document.getElementById('forgotPasswordBtn');
+        const resetModal = document.getElementById('resetPasswordModal');
+        const closeResetModal = document.getElementById('closeResetModal');
+
+        forgotBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const currentEmail = document.getElementById('email').value;
+            if (currentEmail) {
+                document.getElementById('resetEmail').value = currentEmail;
+            }
+            resetModal.style.display = 'flex';
+        });
+
+        closeResetModal.addEventListener('click', () => {
+            resetModal.style.display = 'none';
+        });
+
+        resetModal.addEventListener('click', (e) => {
+            if (e.target === resetModal) resetModal.style.display = 'none';
+        });
+
+        // Reset Password Form Submit
+        document.getElementById('resetForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('resetSubmitBtn');
+            const origText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Updating...';
+            btn.disabled = true;
+
+            const email = document.getElementById('resetEmail').value;
+            const newPassword = document.getElementById('resetNewPassword').value;
+
+            try {
+                let response;
+                try {
+                    response = await fetch('/api/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, newPassword })
+                    });
+                } catch(err) {
+                    response = await fetch('http://localhost:3000/api/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, newPassword })
+                    });
+                }
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Updated!';
+                    btn.style.background = 'linear-gradient(135deg, #00b09b, #96c93d)';
+                    alert('Password updated successfully! You can now log in with your new password.');
+                    resetModal.style.display = 'none';
+                    document.getElementById('password').value = newPassword;
+                } else {
+                    alert(data.error || 'Failed to update password.');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred during password reset. Please try again.');
+            } finally {
+                btn.innerHTML = origText;
+                btn.style.background = '';
+                btn.disabled = false;
+            }
+        });
+
+        // Enhanced submission with smooth animation
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = this.querySelector('.btn-login');
+            const originalContent = btn.innerHTML;
+            
+            // Loading state
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
+            btn.style.opacity = '0.8';
+            btn.disabled = true;
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Minimum loading time for UX feel
+                const minLoadTime = new Promise(resolve => setTimeout(resolve, 800));
+                
+                const fetchFn = async () => {
+                    try {
+                        return await fetch('/api/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                    } catch (e) {
+                        return await fetch('http://localhost:3000/api/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                    }
+                };
+
+                const [response] = await Promise.all([fetchFn(), minLoadTime]);
+                
+                const data = await response.json();
+
+                if (response.ok && data.user) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Success!';
+                    btn.style.background = 'linear-gradient(135deg, #00b09b, #96c93d)';
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    setTimeout(() => {
+                        window.location.href = data.user && data.user.isAdmin ? 'admin.html' : 'index.html';
+                    }, 800);
+                } else {
+                    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> Failed';
+                    btn.style.background = 'linear-gradient(135deg, #ff416c, #ff4b2b)';
+                    alert(data.error || 'Login failed. Please check credentials.');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.style.background = '';
+                        btn.style.opacity = '1';
+                        btn.disabled = false;
+                    }, 1500);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error';
+                btn.style.background = 'linear-gradient(135deg, #f12711, #f5af19)';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.background = '';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
