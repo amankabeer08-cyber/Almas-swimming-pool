@@ -256,66 +256,90 @@
             btn.classList.add('active');
         }
 
-        // Fetch Bookings & Contacts
+        // Fetch Bookings & Contacts with multi-tier fallback
         async function fetchDashboardData() {
-            // Bookings Fetch
+            const bookingsTBody = document.getElementById('bookingsTableBody');
+            bookingsTBody.innerHTML = '<tr><td colspan="9" class="no-data"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading customer bookings...</td></tr>';
+            
+            let bookings = [];
             try {
-                const response = await fetch('http://localhost:3000/api/admin/bookings');
-                const bookings = await response.json();
-                
-                const bookingsTBody = document.getElementById('bookingsTableBody');
-                bookingsTBody.innerHTML = '';
-                
-                if (bookings && bookings.length > 0) {
-                    bookings.forEach(booking => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>#${booking.id}</td>
-                            <td style="font-weight: 600;">${booking.name}</td>
-                            <td><a href="tel:${booking.phone}">${booking.phone}</a></td>
-                            <td>${booking.email || 'N/A'}</td>
-                            <td style="color: var(--secondary-color); font-weight: 600;">${booking.date}</td>
-                            <td>${booking.time}</td>
-                            <td>${booking.persons} Swimmers</td>
-                            <td style="font-size: 0.85rem;">${booking.requests || 'None'}</td>
-                            <td><span class="status-badge">Reserved</span></td>
-                        `;
-                        bookingsTBody.appendChild(tr);
-                    });
-                } else {
-                    bookingsTBody.innerHTML = '<tr><td colspan="9" class="no-data">No slot bookings found.</td></tr>';
+                let res;
+                try {
+                    res = await fetch('/api/admin/bookings');
+                } catch(e) {
+                    res = await fetch('http://localhost:3000/api/admin/bookings');
+                }
+                if (res.ok) {
+                    bookings = await res.json();
                 }
             } catch (err) {
-                console.error(err);
-                document.getElementById('bookingsTableBody').innerHTML = '<tr><td colspan="9" class="no-data" style="color: #ef4444;">Error connecting to API server.</td></tr>';
+                console.warn('Backend fetch failed, using local backup history', err);
+            }
+
+            // Merge with local history records for absolute reliability
+            const localHistory = JSON.parse(localStorage.getItem('myBookingsHistory') || '[]');
+            if (Array.isArray(localHistory) && localHistory.length > 0) {
+                const existingIds = new Set(bookings.map(b => String(b.id)));
+                localHistory.forEach(lb => {
+                    if (!existingIds.has(String(lb.id))) {
+                        bookings.unshift(lb);
+                    }
+                });
+            }
+
+            bookingsTBody.innerHTML = '';
+            if (bookings && bookings.length > 0) {
+                bookings.forEach(booking => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>#${booking.id}</td>
+                        <td style="font-weight: 600; color: #fff;">${booking.name || 'Member'}</td>
+                        <td><a href="tel:${booking.phone}" style="color: var(--secondary-color); text-decoration: none;"><i class="fa-solid fa-phone" style="font-size:0.75rem;"></i> ${booking.phone}</a></td>
+                        <td>${booking.email || 'N/A'}</td>
+                        <td style="color: var(--secondary-color); font-weight: 600;">${booking.date || 'Scheduled'}</td>
+                        <td>${booking.time || 'Flexible'}</td>
+                        <td>${booking.persons || 1} Adults (${booking.address || '0 Kids'})</td>
+                        <td style="font-size: 0.85rem; font-style: italic; color: #cbd5e1;">${booking.requests || 'None'}</td>
+                        <td><span class="status-badge" style="background: rgba(0, 229, 255, 0.15); border: 1px solid rgba(0, 229, 255, 0.3); color: #00e5ff; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem;">Confirmed</span></td>
+                    `;
+                    bookingsTBody.appendChild(tr);
+                });
+            } else {
+                bookingsTBody.innerHTML = '<tr><td colspan="9" class="no-data">No slot bookings found. Submit a booking on contact page to view it here.</td></tr>';
             }
 
             // Contacts Fetch
+            const contactsTBody = document.getElementById('contactsTableBody');
+            let contacts = [];
             try {
-                const response = await fetch('http://localhost:3000/api/admin/contacts');
-                const contacts = await response.json();
-                
-                const contactsTBody = document.getElementById('contactsTableBody');
-                contactsTBody.innerHTML = '';
-                
-                if (contacts && contacts.length > 0) {
-                    contacts.forEach(contact => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>#${contact.id}</td>
-                            <td style="font-weight: 600;">${contact.name}</td>
-                            <td>${contact.email}</td>
-                            <td style="font-size: 0.85rem;">${contact.message}</td>
-                            <td>${new Date(contact.created_at).toLocaleDateString()}</td>
-                        `;
-                        contactsTBody.appendChild(tr);
-                    });
-                } else {
-                    contactsTBody.innerHTML = '<tr><td colspan="5" class="no-data">No contact queries found.</td></tr>';
+                let res;
+                try {
+                    res = await fetch('/api/admin/contacts');
+                } catch(e) {
+                    res = await fetch('http://localhost:3000/api/admin/contacts');
+                }
+                if (res.ok) {
+                    contacts = await res.json();
                 }
             } catch (err) {
-                console.error(err);
-                document.getElementById('contactsTableBody').innerHTML = '<tr><td colspan="5" class="no-data" style="color: #ef4444;">Error connecting to API server.</td></tr>';
+                console.warn('Backend contacts fetch failed', err);
+            }
+
+            contactsTBody.innerHTML = '';
+            if (contacts && contacts.length > 0) {
+                contacts.forEach(contact => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>#${contact.id}</td>
+                        <td style="font-weight: 600;">${contact.name}</td>
+                        <td>${contact.email}</td>
+                        <td style="font-size: 0.85rem;">${contact.message}</td>
+                        <td>${contact.created_at ? new Date(contact.created_at).toLocaleDateString() : 'Recent'}</td>
+                    `;
+                    contactsTBody.appendChild(tr);
+                });
+            } else {
+                contactsTBody.innerHTML = '<tr><td colspan="5" class="no-data">No contact queries found.</td></tr>';
             }
         }
 

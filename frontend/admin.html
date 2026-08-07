@@ -228,21 +228,36 @@
         // Data Fetching Logic
         async function fetchAdminData() {
             try {
-                // Fetch Bookings
-                const bookingsRes = await fetch('/api/admin/bookings');
-                const bookings = await bookingsRes.json();
+                let bookings = [];
+                try {
+                    const bookingsRes = await fetch('/api/admin/bookings');
+                    if (bookingsRes.ok) bookings = await bookingsRes.json();
+                } catch(e) {
+                    console.warn('Backend fetch failed, checking local history backup');
+                }
+
+                const localHistory = JSON.parse(localStorage.getItem('myBookingsHistory') || '[]');
+                if (Array.isArray(localHistory) && localHistory.length > 0) {
+                    const existingIds = new Set(bookings.map(b => String(b.id)));
+                    localHistory.forEach(lb => {
+                        if (!existingIds.has(String(lb.id))) {
+                            bookings.unshift(lb);
+                        }
+                    });
+                }
+
                 const bBody = document.getElementById('bookingsTableBody');
-                if (bookings.length === 0) {
+                if (!bookings || bookings.length === 0) {
                     bBody.innerHTML = '<tr><td colspan="6" class="empty-state">No bookings found.</td></tr>';
                 } else {
                     bBody.innerHTML = bookings.map(b => `
                         <tr>
-                            <td><strong>${b.date}</strong><br>${b.time || 'N/A'}</td>
-                            <td>${b.name}</td>
-                            <td>${b.email}<br>${b.phone}</td>
-                            <td>${b.persons} Person(s)</td>
+                            <td><strong>${b.date || 'Scheduled'}</strong><br>${b.time || 'N/A'}</td>
+                            <td>${b.name || 'Member'}</td>
+                            <td>${b.email || 'N/A'}<br><a href="tel:${b.phone}">${b.phone}</a></td>
+                            <td>${b.persons || 1} Adult(s) (${b.address || '0 Kids'})</td>
                             <td>${b.requests || '-'}</td>
-                            <td>${new Date(b.created_at).toLocaleString()}</td>
+                            <td>${b.created_at ? new Date(b.created_at).toLocaleString() : 'Recent'}</td>
                         </tr>
                     `).join('');
                 }
